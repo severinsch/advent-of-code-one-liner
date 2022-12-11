@@ -1,8 +1,3 @@
-import functools
-import itertools
-import operator
-
-
 def is_visible_(height: int, row: int, column: int, forest: list[list[tuple[int, int, int]]]) -> bool:
     column_vals = [tree_row[column][0] < height for idx, tree_row in enumerate(forest)]
     row_vals = [tree[0] < height for idx, tree in enumerate(forest[row])]
@@ -39,13 +34,13 @@ def get_scenic_score(height: int, row: int, column: int, forest: list[list[tuple
     left = list(reversed(cur_row[:column]))
     right = cur_row[column+1:]
     views = [up, down, left, right]
-    temp = [(len(list(itertools.takewhile(lambda t: t[0] < height, view))), len(view)) for view in views]
+    temp = [(len(list(__import__("itertools").takewhile(lambda t: t[0] < height, view))), len(view)) for view in views]
     scores = [viewing_dist + (viewing_dist != forest_len) for viewing_dist, forest_len in temp]
-    return functools.reduce(operator.mul, scores)
+    return __import__("functools").reduce(__import__("operator").mul, scores)
 
 
 def task_2() -> int:
-    return (lambda forest: max([(lambda cur_column, cur_row: functools.reduce(operator.mul, [viewing_dist + (viewing_dist != forest_len) for viewing_dist, forest_len in [(len(list(itertools.takewhile(lambda t: t[0] < height, view))), len(view)) for view in (list(reversed(cur_column[:row])), cur_column[row+1:], list(reversed(cur_row[:column])), cur_row[column+1:])]]))([tree_row[column] for tree_row in forest], forest[row]) for height, row, column in __import__("itertools").chain.from_iterable(forest)]))([[(int(c), row, column) for column, c in enumerate(s)] for row, s in enumerate(open('input.txt', 'r').read().splitlines())])
+    return (lambda forest: max([(lambda cur_column, cur_row: __import__("functools").reduce(__import__("operator").mul, [viewing_dist + (viewing_dist != forest_len) for viewing_dist, forest_len in [(len(list(__import__("itertools").takewhile(lambda t: t[0] < height, view))), len(view)) for view in (list(reversed(cur_column[:row])), cur_column[row+1:], list(reversed(cur_row[:column])), cur_row[column+1:])]]))([tree_row[column] for tree_row in forest], forest[row]) for height, row, column in __import__("itertools").chain.from_iterable(forest)]))([[(int(c), row, column) for column, c in enumerate(s)] for row, s in enumerate(open('input.txt', 'r').read().splitlines())])
 
 
 def task_2_prettier() -> int:
@@ -54,12 +49,12 @@ def task_2_prettier() -> int:
             max(
                 [
                     (lambda cur_column, cur_row:
-                     functools.reduce(
-                         operator.mul,  # calc total score
+                     __import__("functools").reduce(
+                         __import__("operator").mul,  # calc total score
                          [viewing_dist + (viewing_dist != forest_len)  # add one for the tree blocking the view if not seeing all trees
                           for viewing_dist, forest_len
                           in [
-                              (len(list(itertools.takewhile(lambda t: t[0] < height, view))), len(view))  # get all the trees that can be seen (minus the one blocking view)
+                              (len(list(__import__("itertools").takewhile(lambda t: t[0] < height, view))), len(view))  # get all the trees that can be seen (minus the one blocking view)
                               for view
                               in (list(reversed(cur_column[:row])),  # view up
                                   cur_column[row+1:],  # view down
